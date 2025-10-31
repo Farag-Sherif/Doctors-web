@@ -69,7 +69,7 @@ const Header = () => {
             <div className="container mx-auto">
                 <nav className="lg:hidden flex items-center justify-between">
                     <Link to="/" className="logo">
-                        <img src={logo} alt="Logo" className="w-10 " />
+                        <img src={logo} alt="Logo" className="w-[50px] min-w-10" />
                     </Link>
                     <div className="menu-bar">
                         <i className="fas fa-bars text-3xl cursor-pointer" onClick={() => setOpenMenu(!openMenu)}></i>
@@ -78,7 +78,7 @@ const Header = () => {
                 <nav className={`nav overflow-y-scroll lg:overflow-y-visible py-20 px-8 flex-col -m-4 md:-mx-8 lg:m-0 bg-blue-100 lg:bg-transparent absolute top-0 right-0 h-screen w-md max-w-full rounded-0 space-y-15 lg:flex-row lg:items-center lg:justify-between lg:space-y-0 lg:space-x-4 lg:relative lg:top-0 lg:right-0 lg:p-0 lg:h-auto lg:w-auto ${openMenu ? 'flex' : 'hidden'} lg:flex`}>
                     <div className="list-options flex items-center justify-between mb-10 lg:mb-0 lg:justify-start">
                         <Link to="/">
-                            <img src={logo} alt="Logo" className="w-10" />
+                            <img src={logo} alt="Logo" className="w-[50px] min-w-10" />
                         </Link>
                         <div className="close-bar lg:hidden">
                             <i className="fas fa-times text-3xl cursor-pointer" onClick={() => setOpenMenu(!openMenu)}></i>

@@ -1,0 +1,17 @@
+@import "tailwindcss";
+.main-bg{
+    /* background-image: linear-gradient(rgb(235, 240, 252) 0%, rgb(221, 233, 252) 100%); */
+    background-image: linear-gradient(to right, rgb(235, 240, 252) 0%, rgb(221, 233, 252) 100%);
+}
+*::-webkit-scrollbar {
+    width: 6px;
+}
+
+*::-webkit-scrollbar-thumb {
+    background-color: rgba(100, 116, 139, 0.4);
+    border-radius: 3px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    -ms-border-radius: 3px;
+    -o-border-radius: 3px;
+}

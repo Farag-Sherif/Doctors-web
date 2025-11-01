@@ -75,7 +75,7 @@ const Header = () => {
                 {/* Mobile header */}
                 <nav className="lg:hidden flex items-center justify-between">
                     <Link to="/" className="logo">
-                        <img src={logo} alt="Logo" className="w-10 " />
+                        <img src={logo} alt="Logo" className="w-[50px] min-w-10" />
                     </Link>
                     <div className="menu-bar">
                         <i className="fas fa-bars text-3xl cursor-pointer" onClick={() => setOpenMenu(!openMenu)}></i>
@@ -91,8 +91,12 @@ const Header = () => {
                             <i className="fas fa-times text-3xl cursor-pointer" onClick={() => setOpenMenu(!openMenu)}></i>
                         </div>
                     </div>
+<<<<<<< HEAD
                     <ul className="nav-links space-y-6 text-lg font-semibold flex flex-col items-start  lg:flex-row lg:items-center lg:justify-between lg:space-y-0 lg:space-x-6 lg:px-0">
                        {/* Map nav links */}
+=======
+                    <ul className="nav-links space-y-6 text-lg font-semibold flex flex-col items-start  lg:flex-row lg:items-center lg:justify-between lg:space-y-0 lg:space-x-4 lg:px-0">
+>>>>>>> 6fa3f75e921f26bf9e2a8b1501d9248d28b11a30
                         {(navLinks).map((link) => (
                             <li className="w-full" key={link.id}>
                                 {/* If link has sections, render submenu*/}

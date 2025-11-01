@@ -6,7 +6,7 @@ import google from "../../assets/Forms/icons8-google-48.png";
 
 const Login = () => {
     return (
-        <div className="signup-page relative z-0 overflow-x-hidden">
+        <div className="login-page relative z-0 overflow-x-hidden">
             <div className="container min-h-screen py-10 lg:h-screen lg:max-h-screen flex justify-center items-center md:items-center md:justify-start px-5 mx-auto gap-5">
                 <div className="form w-full md:w-1/2" >
                     <img src={logo} alt="" className="w-20 h-20 mx-auto mb-6" />

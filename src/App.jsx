@@ -1,16 +1,17 @@
 
+import { useLocation } from 'react-router-dom';
 import './App.css'
 import Footer from './Components/Footer/Footer'
 import Header from './Components/Header/Header'
 import AppRoutes from './Routes'
 
 function App() {
-
+  const location = useLocation();
   return (
     <>
-      <Header />
+     {location.pathname === "/login" || location.pathname === "/signup" ? null: <Header />}
       <AppRoutes />
-      <Footer />
+      {location.pathname === "/login" || location.pathname === "/signup" ? null: <Footer />}
     </>
   )
 }

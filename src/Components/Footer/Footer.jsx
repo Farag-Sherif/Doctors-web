@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 
 const Footer = () => {
+    // Footer links
     const quickLinks = [
         { to: "/", label: "Home" },
         { to: "#about", label: "About" },
@@ -42,12 +43,14 @@ const Footer = () => {
             <div className="container mx-auto text-start px-5 py-20 mb-4 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
                 <ul className="quick-links">
                     <h2 className="text-xl font-bold pb-2">Quick Links</h2>
+                    {/* map quick links */}
                     {quickLinks.map((link, index) => (
                         <li key={index}>
                             <Link to={link.to} className="mx-4 block text-gray-500 hover:underline">{link.label}</Link>
                         </li>
                     ))}
                 </ul>
+                {/* map other links */}
                 <ul className="quick-links">
                     <h2 className="text-xl font-bold pb-2">Other Links</h2>
                     {otherLinks.map((link, index) => (
@@ -56,6 +59,7 @@ const Footer = () => {
                         </li>
                     ))}
                 </ul>
+                {/* map more links */}
                 <ul className="quick-links">
                     <h2 className="text-xl font-bold pb-2">More Links</h2>
                     {moreLinks.map((link, index) => (
@@ -64,6 +68,7 @@ const Footer = () => {
                         </li>
                     ))}
                 </ul>
+                {/* map legal links */}
                 <ul className="quick-links">
                     <h2 className="text-xl font-bold pb-2">Legal</h2>
                     {legalLinks.map((link, index) => (
@@ -72,6 +77,7 @@ const Footer = () => {
                         </li>
                     ))}
                 </ul>
+                {/* map developer links */}
                 <ul className="quick-links">
                     <h2 className="text-xl font-bold pb-2">Developers</h2>
                     {developerLinks.map((link, index) => (

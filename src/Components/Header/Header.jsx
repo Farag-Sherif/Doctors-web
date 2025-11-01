@@ -5,12 +5,15 @@ import logo from '../../assets/logo.svg';
 import { useEffect, useRef, useState } from 'react';
 
 const Header = () => {
+    // Menu state
     const [openMenu, setOpenMenu] = useState(false);
+    // SubMenu state
     const [openSubMenu, setOpenSubMenu] = useState({
         about: false,
         doctors: false,
         services: false,
     });
+    // Active Link
     const [active, setActive] = useState(window.location.pathname === '/' ? 'home' : window.location.pathname.slice(1));
     const navLinks = [
         { to: "/", label: "Home", id: "home" },
@@ -20,12 +23,14 @@ const Header = () => {
         { to: "/appointments", label: "Appointments", id: "appointments" },
         { to: "/contact", label: "Contact", id: "contact" },
     ];
+    // Toggle SubMenu
     const toggleSubMenu = (linkId, isOpen) => {
         setOpenSubMenu(prevState => ({
             [linkId]: isOpen
         }));
     };
-    
+
+    // Header scroll effect
     const headerRef = useRef(null);
     useEffect(() => {
         const header = headerRef.current;
@@ -67,6 +72,7 @@ const Header = () => {
     return (
         <header id="header" ref={headerRef} className="py-4 px-8 mx-4 md:mx-8 lg:mx-12 top-0 rounded-4xl my-4 fixed w-[calc(100%-2rem)] md:w-[calc(100%-4rem)] lg:w-[calc(100%-6rem)] z-50 transition-all duration-500 ease-in-out">
             <div className="container mx-auto">
+                {/* Mobile header */}
                 <nav className="lg:hidden flex items-center justify-between">
                     <Link to="/" className="logo">
                         <img src={logo} alt="Logo" className="w-10 " />
@@ -75,18 +81,21 @@ const Header = () => {
                         <i className="fas fa-bars text-3xl cursor-pointer" onClick={() => setOpenMenu(!openMenu)}></i>
                     </div>
                 </nav>
+                {/* Desktop & Mobile Menu */}
                 <nav className={`nav overflow-y-scroll lg:overflow-y-visible py-20 px-8 flex-col -m-4 md:-mx-8 lg:m-0 bg-blue-100 lg:bg-transparent absolute top-0 right-0 h-screen w-md max-w-full rounded-0 space-y-15 lg:flex-row lg:items-center lg:justify-between lg:space-y-0 lg:space-x-4 lg:relative lg:top-0 lg:right-0 lg:p-0 lg:h-auto lg:w-auto ${openMenu ? 'flex' : 'hidden'} lg:flex`}>
                     <div className="list-options flex items-center justify-between mb-10 lg:mb-0 lg:justify-start">
                         <Link to="/">
-                            <img src={logo} alt="Logo" className="w-10" />
+                            <img src={logo} alt="Logo" className="w-[50px] min-w-10" />
                         </Link>
                         <div className="close-bar lg:hidden">
                             <i className="fas fa-times text-3xl cursor-pointer" onClick={() => setOpenMenu(!openMenu)}></i>
                         </div>
                     </div>
                     <ul className="nav-links space-y-6 text-lg font-semibold flex flex-col items-start  lg:flex-row lg:items-center lg:justify-between lg:space-y-0 lg:space-x-6 lg:px-0">
+                       {/* Map nav links */}
                         {(navLinks).map((link) => (
                             <li className="w-full" key={link.id}>
+                                {/* If link has sections, render submenu*/}
                                 {!link.sections ?
                                     (<Link to={link.to}
                                         id={link.id}
@@ -97,6 +106,7 @@ const Header = () => {
                                             onClick={() => { toggleSubMenu(link.id, !openSubMenu[link.id]) }}
                                             className={`${active === link.id ? 'active' : ''} cursor-pointer flex lg:items-center lg:justify-center hover:text-gray-500 text-black relative transition-all duration-500 ease-in-out rounded-2xl px-4 py-2 lg:px-0 lg:py-0 hover:bg-blue-200 lg:hover:bg-transparent`}>{link.label} <i className={`fas invisible lg:visible text-sm ml-2 fa-chevron-${openSubMenu[link.id] ? 'up' : 'down'}`}></i></span>
                                     )}
+                                {/* Map sections if link has sections*/}
                                 {link.sections && <ul className={`sub-menu mt-2 ml-4 border-l-4 border-blue-300 p-4 lg:absolute bg-white rounded-lg shadow-lg ${openSubMenu[link.id] ? 'lg:block' : 'lg:hidden'}`}>
                                     {link.sections.map((section) => (
                                         <li key={section} className="">

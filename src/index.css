@@ -15,7 +15,10 @@
     -ms-border-radius: 3px;
     -o-border-radius: 3px;
 }
-<<<<<<< HEAD
-=======
 
->>>>>>> 6fa3f75e921f26bf9e2a8b1501d9248d28b11a30
+/*larg*/
+@media (min-width: 1500px) {
+  .container {
+    width: 87%;
+  }
+}

@@ -22,9 +22,11 @@ body{
     -ms-border-radius: 3px;
     -o-border-radius: 3px;
 }
+
+
 /*larg*/
 @media (min-width: 1500px) {
-    .container {
-        width: 87%;
-    }
+  .container {
+    width: 87%;
+  }
 }

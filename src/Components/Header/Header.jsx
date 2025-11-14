@@ -91,7 +91,7 @@ const Header = () => {
                             <i className="fas fa-times text-3xl cursor-pointer" onClick={() => setOpenMenu(!openMenu)}></i>
                         </div>
                     </div>
-                    <ul className="list flex flex-col lg:flex-row items-center justify-center space-y-4 lg:space-y-0 lg:space-x-4">
+                    <ul className="nav-links space-y-6 text-lg font-semibold flex flex-col items-start  lg:flex-row lg:items-center lg:justify-between lg:space-y-0 lg:space-x-6 lg:px-0">
                         {(navLinks).map((link) => (
                             <li key={link.id} className={`${link.sections && "have-submenu"} w-full`}>
                                 {/* If link has sections*/}

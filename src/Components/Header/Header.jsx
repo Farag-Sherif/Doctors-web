@@ -1,7 +1,7 @@
 import './Header.css'
 import { Link } from "react-router-dom";
 import Button from "../Buttons/Button";
-import logo from '../../assets/logo.svg';
+import logo from '../../assets/logo.png';
 import { useEffect, useRef, useState } from 'react';
 
 const Header = () => {
@@ -91,38 +91,30 @@ const Header = () => {
                             <i className="fas fa-times text-3xl cursor-pointer" onClick={() => setOpenMenu(!openMenu)}></i>
                         </div>
                     </div>
-<<<<<<< HEAD
                     <ul className="nav-links space-y-6 text-lg font-semibold flex flex-col items-start  lg:flex-row lg:items-center lg:justify-between lg:space-y-0 lg:space-x-6 lg:px-0">
-                       {/* Map nav links */}
-=======
-                    <ul className="nav-links space-y-6 text-lg font-semibold flex flex-col items-start  lg:flex-row lg:items-center lg:justify-between lg:space-y-0 lg:space-x-4 lg:px-0">
->>>>>>> 6fa3f75e921f26bf9e2a8b1501d9248d28b11a30
                         {(navLinks).map((link) => (
-                            <li className="w-full" key={link.id}>
-                                {/* If link has sections, render submenu*/}
-                                {!link.sections ?
-                                    (<Link to={link.to}
-                                        id={link.id}
-                                        onClick={() => { setActive(link.id); setOpenMenu(false); toggleSubMenu(link.id, false); }}
-                                        className={`${active === link.id ? 'active' : ''} hover:text-gray-500 relative transition-all duration-500 ease-in-out block rounded-2xl px-4 py-2 lg:px-0 lg:py-0 hover:bg-blue-200 lg:hover:bg-transparent`}>{link.label}</Link>
-                                    ) : (
-                                        <span id={link.id}
-                                            onClick={() => { toggleSubMenu(link.id, !openSubMenu[link.id]) }}
-                                            className={`${active === link.id ? 'active' : ''} cursor-pointer flex lg:items-center lg:justify-center hover:text-gray-500 text-black relative transition-all duration-500 ease-in-out rounded-2xl px-4 py-2 lg:px-0 lg:py-0 hover:bg-blue-200 lg:hover:bg-transparent`}>{link.label} <i className={`fas invisible lg:visible text-sm ml-2 fa-chevron-${openSubMenu[link.id] ? 'up' : 'down'}`}></i></span>
-                                    )}
-                                {/* Map sections if link has sections*/}
-                                {link.sections && <ul className={`sub-menu mt-2 ml-4 border-l-4 border-blue-300 p-4 lg:absolute bg-white rounded-lg shadow-lg ${openSubMenu[link.id] ? 'lg:block' : 'lg:hidden'}`}>
-                                    {link.sections.map((section) => (
-                                        <li key={section} className="">
-                                            <Link to={`${link.to}#${section}`}
-                                                onClick={() => { setActive(link.id); setOpenMenu(false); toggleSubMenu(link.id, false); }}
-                                                className="text-sm hover:text-gray-500  transition-all duration-500 ease-in-out block rounded-2xl p-3 lg:px-5 hover:bg-blue-200 lg:hover:bg-transparent">{section.charAt(0).toUpperCase() + section.slice(1)}</Link>
-                                        </li>
-                                    ))}
-                                </ul>}
+                            <li key={link.id} className={`${link.sections && "have-submenu"} w-full`}>
+                                {/* If link has sections*/}
+                                <Link to={link.to}
+                                    id={link.id}
+                                    onClick={() => { setActive(link.id); setOpenMenu(false); }}
+                                    className={`${active === link.id ? 'active' : ''} hover:text-gray-500 relative transition-all duration-500 ease-in-out flex items-center rounded-2xl px-4 py-2 lg:px-0 lg:py-0 hover:bg-blue-200 lg:hover:bg-transparent`}>{link.label}{!link.sections ? '' : <i className="fas fa-chevron-down ml-2 text-sm"></i>}</Link>
+
+                                   
+                                        {/* Map sections if link has sections*/}
+                                   {link.sections && <ul className={"sub-menu mt-2 ml-4 border-l-4 border-blue-300 p-4 lg:absolute bg-white rounded-lg shadow-lg lg:opacity-0 lg:invisible lg:translate-y-20 duration-300 ease-in-out "}>
+                                        {link.sections.map((section) => (
+                                            <li key={section} className="">
+                                                <Link to={`${link.to}#${section}`}
+                                                    onClick={() => { setActive(link.id); setOpenMenu(false); toggleSubMenu(link.id, false); }}
+                                                    className="text-sm hover:text-gray-500  transition-all duration-500 ease-in-out block rounded-2xl p-3 lg:px-5 hover:bg-blue-200 lg:hover:bg-transparent">{section.charAt(0).toUpperCase() + section.slice(1)}</Link>
+                                            </li>
+                                        ))}
+                                    </ul>} 
                             </li>
                         ))}
                     </ul>
+                    {/* Buttons for login and signup */}
                     <div className="buttons flex space-y-4 text-lg font-semibold flex-col px-2 lg:flex-row lg:items-center lg:justify-between lg:mt-0 lg:px-0 lg:space-y-0 lg:space-x-2">
                         <Link to="/signup" className="w-full"><Button text="Signup" style="emp-button" /></Link>
                         <Link to="/login" className="w-full"><Button text="Login" /></Link>

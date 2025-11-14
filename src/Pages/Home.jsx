@@ -1,12 +1,16 @@
 import './PagesStyle.css';
+import '../Components/Buttons/Swiper-Button-Style/Swiper-Buttons-Style.css';
 import landingImage from "../assets/Home/landing.png";
-import doctor_1 from "../assets/Home/doctor-1.webp";
 import { Link } from 'react-router-dom';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation } from 'swiper/modules';
 import 'swiper/css';
 import googlePlayIcon from "../assets/Home/icons8-google-play-store-96.png";
 import appStoreIcon from "../assets/Home/icons8-ios-100.png";
+import doctors from "../assets/Home/doctors/doctor-nurse-special-equipment.jpg";
+import doctor_1 from "../assets/Home/doctors/doctor-1.webp";
+import doctor_2 from "../assets/Home/doctors/woman-nurse-doxcbox.png";
+import mobileApp from "../assets/Home/FuturHealth-Review-4.jpg";
 const Home = () => {
     return (
         <div className="home-page">
@@ -14,7 +18,9 @@ const Home = () => {
                 <div className="container mx-auto h-full flex items-center justify-between gap-10 flex-col-reverse lg:flex-row">
                     <div className="left-side h-full flex flex-col justify-end items-center lg:items-start text-center lg:text-left gap-6 w-full lg:w-lg">
                         <h1 className="text-4xl font-bold md:text-5xl ">Wellcare Nuturing Health, Inspiring Life</h1>
-                        <p className="text-lg text-gray-500">Lorem ipsum dolor sit amet consectetur adipisicing elit. Unde illo eveniet deserunt vel nobis. In dicta eos consequuntur eaque repellendus perferendis dolorem iusto dolore esse. Dolorem suscipit adipisci dolores cupiditate.</p>
+                        <p className="text-lg text-gray-500">Empowering wellness through comprehensive care
+                            Discover the journey to vibrant health and an inspired
+                            life with wellcare health.</p>
                         <div className="buttons flex gap-5 w-full md:flex-nowrap flex-wrap">
                             <button className="neu-button min-w-[200px] w-3/4" style={{ border: "none" }}>Book Appointment</button>
                             <button className="emp-button bg-white  min-w-[200px] w-3/4" style={{ border: "none" }}>Contact Us <i className="fa-solid fa-arrow-right"></i></button>
@@ -103,7 +109,7 @@ const Home = () => {
             <section className="preparing-your-future py-20">
                 <div className="container mx-auto flex flex-col items-center text-center px-5 md:flex-row md:items-center md:text-left md:justify-between gap-10">
                     <div className="image w-full md:w-2/3 relative">
-                        <img src="https://i.ibb.co/0j3y2vY/doctor-1.png" alt="Preparing for your future" className="w-full h-[500px] object-cover rounded-xl shadow-lg" />
+                        <img src={doctors} alt="Preparing for your future" className="w-full h-[500px] object-cover rounded-xl shadow-lg" />
                         <div className="content bg-white rounded-2xl shadow-lg py-3 px-5 flex items-center gap-4  w-fit absolute bottom-5 -left-10 md:left-10 transform ml-5">
                             <img src="https://i.ibb.co/0j3y2vY/doctor-1.png" alt="Best Doctor" className="w-10 h-10 rounded-full object-cover" />
                             <div className="text">
@@ -281,19 +287,22 @@ const Home = () => {
                     <div className="text-content w-full md:w-1/2 text-center md:text-left py-20">
                         <h2 className="text-3xl font-semibold mb-3">Modern Instrument</h2>
                         <p className="text-gray-400 mb-10">Embrace the joy of a radiant smilel Our artistic
-                            team crafts dazzling grins with cutting-edge
+                            leam crafts dazzling grins with cutting-edge
                             care ...</p>
-                        <h2 className="text-3xl font-semibold mb-3">Modern Instrument</h2>
-                        <p className="text-gray-400 mb-10">Embrace the joy of a radiant smilel Our artistic
-                            team crafts dazzling grins with cutting-edge
-                            care ...</p>
-                        <h2 className="text-3xl font-semibold mb-3">Modern Instrument</h2>
-                        <p className="text-gray-400">Embrace the joy of a radiant smilel Our artistic
-                            team crafts dazzling grins with cutting-edge
-                            care ...</p>
+                        <h2 className="text-3xl font-semibold mb-3">Easy Billing System</h2>
+                        <p className="text-gray-400 mb-10">Embrace the joy of a radiant smilel Our
+                            arlistic leam crafts dazzling grins wilh
+
+                            and comprehensive healthcare services tailored to
+
+                            cutting edge care.</p>
+                        <h2 className="text-3xl font-semibold mb-3">Qualified Nurses & Staff</h2>
+                        <p className="text-gray-400">Embrace lhe jay of a radiont smile! Our artistic
+                            team crafts dazzling grins with cutting edge
+                            core ...</p>
                     </div>
                     <div className="image w-full md:w-1/2 relative">
-                        <img src={doctor_1} alt="About Our Staffs" className=" h-full object-cover mx-auto" />
+                        <img src={doctor_2} alt="About Our Staffs" className=" h-full object-cover mx-auto" />
                         <div className="overlay absolute bottom-5 right-0 bg-white flex items-center justify-between rounded-xl p-5">
                             <div className="experts mr-10  flex items-start gap-2">
                                 <i className="fa-solid fa-heart-pulse text-3xl text-blue-500"></i>
@@ -314,23 +323,23 @@ const Home = () => {
                 </div>
             </section>
             <section className='app-info'>
-                <div className="container mx-auto px-5 py-20 rounded-xl flex flex-col md:flex-row items-center justify-between gap-10">
+                <div className="container mx-auto px-5 py-20 rounded-xl flex flex-col md:flex-row items-center justify-between gap-5 lg:gap-10">
                     <div className="image w-full md:w-1/2">
-                        <img src="https://i.ibb.co/0j3y2vY/doctor-1.png" alt="Mobile App" className="w-full h-auto object-cover rounded-xl shadow-lg" />
+                        <img src={mobileApp} alt="Mobile App" className="w-full h-auto object-cover rounded-xl shadow-lg" />
                     </div>
                     <div className="text-content w-full md:w-1/2">
-                        <h2 className="text-5xl font-bold mb-10">Treatment is Easy
+                        <h2 className="text-4xl lg:text-5xl text-center md:text-left font-bold mb-10 md:mb-5 lg:mb-10">Treatment is Easy
                             with Medifye</h2>
-                        <p className="text-lg text-gray-600 mb-20">Lorem ipsum dolor sit amet, consectetur
+                        <p className="text-lg text-gray-600 mb-10 md:mb-5 lg:mb-20 text-center md:text-left">Lorem ipsum dolor sit amet, consectetur
                             adipiscing elit, Nunc eget libero velit. Duis lacinia
                             nisl odio, sit amet commodo massa tempor
 
                             De. Charollette Baker
 
                             pellentesque.</p>
-                        <div className="buttons flex gap-5 w-full md:flex-nowrap flex-wrap">
+                        <div className="buttons flex gap-5 w-full lg:flex-nowrap flex-wrap">
                             <button className="neu-button bg-white  min-w-[200px] w-3/4 items-center justify-center gap-3 text-2xl " style={{ display: "flex" }}> <img src={appStoreIcon} alt="" className="w-10 h-10" />App Store</button>
-                            <button className="neu-button min-w-[200px] w-3/4  items-center justify-center gap-3 text-2xl " style={{display: "flex"}}> <img src={googlePlayIcon} alt="" className="w-10 h-10" />Google Play</button>
+                            <button className="neu-button min-w-[200px] w-3/4  items-center justify-center gap-3 text-2xl " style={{ display: "flex" }}> <img src={googlePlayIcon} alt="" className="w-10 h-10" />Google Play</button>
                         </div>
                     </div>
                 </div>

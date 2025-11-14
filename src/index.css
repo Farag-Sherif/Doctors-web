@@ -1,4 +1,11 @@
 @import "tailwindcss";
+body{
+    margin: 0;
+    padding: 0;
+    font-family: 'Roboto', sans-serif;
+    box-sizing: border-box;
+    overflow-x: hidden;
+}
 .main-bg{
     /* background-image: linear-gradient(rgb(235, 240, 252) 0%, rgb(221, 233, 252) 100%); */
     background-image: linear-gradient(to right, rgb(235, 240, 252) 0%, rgb(221, 233, 252) 100%);
@@ -15,7 +22,9 @@
     -ms-border-radius: 3px;
     -o-border-radius: 3px;
 }
-<<<<<<< HEAD
-=======
-
->>>>>>> 6fa3f75e921f26bf9e2a8b1501d9248d28b11a30
+/*larg*/
+@media (min-width: 1500px) {
+    .container {
+        width: 87%;
+    }
+}

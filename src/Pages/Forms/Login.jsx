@@ -1,10 +1,21 @@
 import { Link } from "react-router-dom";
-import logo from "../../assets/logo.svg";
+import logo from "../../assets/logo.png";
 import login from "../../assets/Forms/medical-banner-with-stethoscope.jpg";
 import facebook from "../../assets/Forms/icons8-facebook-48.png";
 import google from "../../assets/Forms/icons8-google-48.png";
+import { useState } from "react";
 
 const Login = () => {
+    // object info for login
+    const [info, setInfo] = useState({
+        email: "",
+        password: ""
+    });
+    // handel submit
+    const handelSubmit = (e) => {
+        e.preventDefault();
+        console.log(info);
+    }
     return (
         <div className="login-page relative z-0 overflow-x-hidden">
             <div className="container min-h-screen py-10 lg:h-screen lg:max-h-screen flex justify-center items-center md:items-center md:justify-start px-5 mx-auto gap-5">
@@ -15,18 +26,24 @@ const Login = () => {
                         <div className="form-group flex flex-col gap-2">
                             <div className="email">
                                 <label htmlFor="email" className="block mb-2">Email:</label>
-                                <input type="email" id="email" name="email" required className="w-full border-2 outline-none border-gray-300 text-lg px-5 py-2 rounded-2xl bg-blue-50 focus:border-blue-500 focus:shadow-blue" placeholder="Email" />
+                                <input type="email" id="email" name="email" required className="w-full border-2 outline-none border-gray-300 text-lg px-5 py-2 rounded-2xl bg-blue-50 focus:border-blue-500 focus:shadow-blue" placeholder="Email"
+                                    value={info.email}
+                                    onChange={(e) => setInfo({ ...info, email: e.target.value })}
+                                />
                             </div>
                             <div className="password">
                                 <label htmlFor="password" className="block mb-2">Password:</label>
-                                <input type="password" id="password" name="password" required className="w-full border-2 outline-none border-gray-300 text-lg px-5 py-2 rounded-2xl bg-blue-50 focus:border-blue-500 focus:shadow-blue" placeholder="Password" />
+                                <input type="password" id="password" name="password" required className="w-full border-2 outline-none border-gray-300 text-lg px-5 py-2 rounded-2xl bg-blue-50 focus:border-blue-500 focus:shadow-blue" placeholder="Password"
+                                    value={info.password}
+                                    onChange={(e) => setInfo({ ...info, password: e.target.value })}
+                                />
                             </div>
                         </div>
                         <div className="my-2 ml-3 text-end ">
                             <p><Link to="/forgot-password" className="text-blue-500 hover:underline">Forget Password?</Link></p>
                         </div>
                     </form>
-                    <button type="submit" className="mt-4 bg-blue-500 text-white px-6 py-2 rounded-full hover:bg-blue-600 transition-colors duration-300 w-full">Log In</button>
+                    <button type="submit" className="mt-4 bg-blue-500 text-white px-6 py-2 rounded-full hover:bg-blue-600 transition-colors duration-300 w-full" onClick={handelSubmit}>Log In</button>
                     <div className="other-way-to-signup">
                         <p className="text-center my-2 text-gray-500">Or Log In with</p>
                         <div className="flex justify-center gap-6">

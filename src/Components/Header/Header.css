@@ -18,8 +18,20 @@ header {
         a.active {
             color: #777 !important;
         }
-
-        span::after,
+        .have-submenu:hover {
+    i{
+        transform: rotate(180deg);
+        -webkit-transform: rotate(180deg);
+        -moz-transform: rotate(180deg);
+        -ms-transform: rotate(180deg);
+        -o-transform: rotate(180deg);
+}
+    .sub-menu {
+    opacity: 1;
+    visibility: visible;
+    translate: 0 !important;
+}
+}
         a::after {
             content: "";
             position: absolute;
@@ -37,9 +49,6 @@ header {
             transform-origin: right;
         }
 
-        span:hover::after,
-        span.active,
-        span:active::after,
         a.active,
         a:active::after,
         a:hover::after {
@@ -65,13 +74,19 @@ header {
             background-color: #bedbff !important;
         }
 
-        span {
+        .have-submenu > a {
+            i{
+                display: none;
+            }
             color: #777;
             background-color: transparent !important;
 
             &::after {
                 background-color: transparent !important;
             }
+        }
+        .sub-menu {
+            translate: 0 !important;
         }
     }
 }

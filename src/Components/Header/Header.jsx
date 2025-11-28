@@ -7,28 +7,38 @@ import { useEffect, useRef, useState } from 'react';
 const Header = () => {
     // Menu state
     const [openMenu, setOpenMenu] = useState(false);
-    // SubMenu state
-    const [openSubMenu, setOpenSubMenu] = useState({
-        about: false,
-        doctors: false,
-        services: false,
-    });
     // Active Link
     const [active, setActive] = useState(window.location.pathname === '/' ? 'home' : window.location.pathname.slice(1));
     const navLinks = [
         { to: "/", label: "Home", id: "home" },
-        { to: "/about", label: "About", id: "about", sections: ['team', 'mission', 'history'] },
-        { to: "/services", label: "Services", id: "services", sections: ['general-consultation', 'emergency-care', 'surgery', 'pediatrics', 'radiology', 'laboratory', 'pharmacy'] },
-        { to: "/doctors", label: "Doctors", id: "doctors", sections: ['cardiology', 'neurology', 'orthopedics', 'pediatrics', 'dermatology', 'gynecology', 'psychiatry', 'ophthalmology'] },
-        { to: "/appointments", label: "Appointments", id: "appointments" },
+        {
+            to: "/about", label: "About", id: "about", sections: [
+                { value: "فريق العمل", en: "Team" },
+                { value: "مهمتنا", en: "Mission" }
+            ]
+        },
+        {
+            to: "/services", label: "Services", id: "services", sections: [
+                { value: "الأشعة", en: "Radiology" },
+                { value: "المعامل", en: "Laboratory" },
+                { value: "صيدلية", en: "Pharmacy" }
+            ]
+        },
+        {
+            to: "/doctors", label: "Doctors", id: "doctors", sections: [
+                { value: "قلب", en: "Cardiology Physician" },
+                { value: "مخ واعصاب", en: "Neurology Physician" },
+                { value: "عظام", en: "Orthopedics Physician" },
+                { value: "اطفال", en: "Pediatrics Physician" },
+                { value: "جلدية", en: "Dermatology Physician" },
+                { value: "نساء وتوليد", en: "Gynecology Physician" },
+                { value: "نفسي", en: "Psychiatry Physician" },
+                { value: "عيون", en: "Ophthalmology Physician" }
+            ]
+        },
+        // { to: "/appointments", label: "Appointments", id: "appointments" },
         { to: "/contact", label: "Contact", id: "contact" },
     ];
-    // Toggle SubMenu
-    const toggleSubMenu = (linkId, isOpen) => {
-        setOpenSubMenu(prevState => ({
-            [linkId]: isOpen
-        }));
-    };
 
     // Header scroll effect
     const headerRef = useRef(null);
@@ -70,7 +80,7 @@ const Header = () => {
     }, []);
 
     return (
-        <header id="header" ref={headerRef} className="py-4 px-8 mx-4 md:mx-8 lg:mx-12 top-0 rounded-4xl my-4 fixed w-[calc(100%-2rem)] md:w-[calc(100%-4rem)] lg:w-[calc(100%-6rem)] z-50 transition-all duration-500 ease-in-out">
+        <header id="header" ref={headerRef} className="py-4 px-8 mx-4 md:mx-8 lg:mx-12 top-0 rounded-4xl my-4 fixed z-40 w-[calc(100%-2rem)] md:w-[calc(100%-4rem)] lg:w-[calc(100%-6rem)] transition-all duration-500 ease-in-out">
             <div className="container mx-auto">
                 {/* Mobile header */}
                 <nav className="lg:hidden flex items-center justify-between">
@@ -100,17 +110,17 @@ const Header = () => {
                                     onClick={() => { setActive(link.id); setOpenMenu(false); }}
                                     className={`${active === link.id ? 'active' : ''} hover:text-gray-500 relative transition-all duration-500 ease-in-out flex items-center rounded-2xl px-4 py-2 lg:px-0 lg:py-0 hover:bg-blue-200 lg:hover:bg-transparent`}>{link.label}{!link.sections ? '' : <i className="fas fa-chevron-down ml-2 text-sm"></i>}</Link>
 
-                                   
-                                        {/* Map sections if link has sections*/}
-                                   {link.sections && <ul className={"sub-menu mt-2 ml-4 border-l-4 border-blue-300 p-4 lg:absolute bg-white rounded-lg shadow-lg lg:opacity-0 lg:invisible lg:translate-y-20 duration-300 ease-in-out "}>
-                                        {link.sections.map((section) => (
-                                            <li key={section} className="">
-                                                <Link to={`${link.to}#${section}`}
-                                                    onClick={() => { setActive(link.id); setOpenMenu(false); toggleSubMenu(link.id, false); }}
-                                                    className="text-sm hover:text-gray-500  transition-all duration-500 ease-in-out block rounded-2xl p-3 lg:px-5 hover:bg-blue-200 lg:hover:bg-transparent">{section.charAt(0).toUpperCase() + section.slice(1)}</Link>
-                                            </li>
-                                        ))}
-                                    </ul>} 
+
+                                {/* Map sections if link has sections*/}
+                                {link.sections && <ul className={"sub-menu mt-2 ml-4 border-l-4 border-blue-300 p-4 lg:absolute bg-white rounded-lg shadow-lg lg:opacity-0 lg:invisible lg:translate-y-20 duration-300 ease-in-out "}>
+                                    {link.sections.map((section) => (
+                                        <li key={section.en} className="">
+                                            <Link to={`${link.to}/search/${section.en}`}
+                                                onClick={() => { setActive(link.id); setOpenMenu(false); }}
+                                                className="text-sm hover:text-gray-500  transition-all duration-500 ease-in-out block rounded-2xl p-3 lg:px-5 hover:bg-blue-200 lg:hover:bg-transparent">{section.en}</Link>
+                                        </li>
+                                    ))}
+                                </ul>}
                             </li>
                         ))}
                     </ul>

@@ -6,11 +6,11 @@ import doctor_1 from "../../assets/Home/doctors/doctor-1.webp";
 // import PaginatedItems from "../../Components/Pagination/pagination";
 // import { useEffect, useState } from "react";
 import ElementBox from "../../Components/Element/ElementBox";
+import PlaceholderCard from "../../Components/Element/PlaceholderCard";
 // import axios from "axios";
 
 const PopulerDoctors = () => {
-        const [doctors] = useOutletContext();
-
+    let [doctors] = useOutletContext();
 
     return (
         <>
@@ -43,6 +43,25 @@ const PopulerDoctors = () => {
                             },
                         }}
                         className="mySwiper flex">
+                        {doctors.length === 0 ? (
+                            <>
+                                <SwiperSlide>
+                                    <PlaceholderCard />
+                                </SwiperSlide>
+                                <SwiperSlide>
+                                    <PlaceholderCard />
+                                </SwiperSlide>
+                                <SwiperSlide>
+                                    <PlaceholderCard />
+                                </SwiperSlide>
+                                <SwiperSlide>
+                                    <PlaceholderCard />
+                                </SwiperSlide>
+                                <SwiperSlide>
+                                    <PlaceholderCard />
+                                </SwiperSlide>
+                            </>
+                        ) : null}
                         {doctors.slice(0, 10).map((doctor) => (
                             <SwiperSlide key={doctor.id}>
                                 <ElementBox
@@ -61,6 +80,25 @@ const PopulerDoctors = () => {
                         <h2 className="text-3xl font-bold" style={{ textShadow: "0 15px 10px currentColor, 0 0 20px currentColor" }}><i className="fa-solid fa-user-doctor mr-2"></i>Other Doctors</h2>
                     </div>
                     <div className="doctors grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-5 ">
+                        {doctors.length === 0 ? (
+                            <>
+                                <PlaceholderCard />
+                                <PlaceholderCard />
+                                <PlaceholderCard />
+                                <PlaceholderCard />
+                                <PlaceholderCard />
+                                <PlaceholderCard />
+                                <PlaceholderCard />
+                                <PlaceholderCard />
+                                <PlaceholderCard />
+                                <PlaceholderCard />
+                                <PlaceholderCard />
+                                <PlaceholderCard />
+                                <PlaceholderCard />
+                                <PlaceholderCard />
+                                <PlaceholderCard />
+                            </>
+                        ) : null}
                         {
                             doctors.map((doctor) => (
                                 <ElementBox

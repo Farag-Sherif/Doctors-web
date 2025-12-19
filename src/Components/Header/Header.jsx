@@ -1,10 +1,17 @@
 import './Header.css'
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Button from "../Buttons/Button";
 import logo from '../../assets/logo.png';
-import { useEffect, useRef, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
+import { User } from '../Context/Context';
+import Cookies from 'universal-cookie';
 
 const Header = () => {
+    // User context
+    const userContext = useContext(User);
+    // Cookies
+    const cookie = new Cookies();
+    const nav = useNavigate();
     // Menu state
     const [openMenu, setOpenMenu] = useState(false);
     // Active Link
@@ -37,7 +44,7 @@ const Header = () => {
             ]
         },
         // { to: "/appointments", label: "Appointments", id: "appointments" },
-        { to: "/contact", label: "Contact", id: "contact" },
+        { to: "/contact", label: "Contact Us", id: "contact" },
     ];
 
     // Header scroll effect
@@ -78,7 +85,15 @@ const Header = () => {
             window.removeEventListener('scroll', handleScroll);
         };
     }, []);
-
+    
+    // Handle Logout
+    function HandleLogout () {
+        userContext.setAuth({ accessToken: null, refreshToken: null });
+        cookie.remove("Bearer", { path: '/' });
+        cookie.remove("refresh", { path: '/' });
+        cookie.remove("user", { path: '/' });
+        nav("/login");
+    };
     return (
         <header id="header" ref={headerRef} className="py-4 px-8 mx-4 md:mx-8 lg:mx-12 top-0 rounded-4xl my-4 fixed z-40 w-[calc(100%-2rem)] md:w-[calc(100%-4rem)] lg:w-[calc(100%-6rem)] transition-all duration-500 ease-in-out">
             <div className="container mx-auto">
@@ -108,7 +123,7 @@ const Header = () => {
                                 <Link to={link.to}
                                     id={link.id}
                                     onClick={() => { setActive(link.id); setOpenMenu(false); }}
-                                    className={`${active === link.id ? 'active' : ''} hover:text-gray-500 relative transition-all duration-500 ease-in-out flex items-center rounded-2xl px-4 py-2 lg:px-0 lg:py-0 hover:bg-blue-200 lg:hover:bg-transparent`}>{link.label}{!link.sections ? '' : <i className="fas fa-chevron-down ml-2 text-sm"></i>}</Link>
+                                    className={`${active === link.id ? 'active' : ''} hover:text-gray-500 relative transition-all duration-500 ease-in-out flex items-center rounded-2xl px-4 py-2 lg:px-0 lg:py-0 hover:bg-blue-200 lg:hover:bg-transparent text-nowrap`}>{link.label}{!link.sections ? '' : <i className="fas fa-chevron-down ml-2 text-sm"></i>}</Link>
 
 
                                 {/* Map sections if link has sections*/}
@@ -124,11 +139,23 @@ const Header = () => {
                             </li>
                         ))}
                     </ul>
+
                     {/* Buttons for login and signup */}
-                    <div className="buttons flex space-y-4 text-lg font-semibold flex-col px-2 lg:flex-row lg:items-center lg:justify-between lg:mt-0 lg:px-0 lg:space-y-0 lg:space-x-2">
-                        <Link to="/signup" className="w-full"><Button text="Signup" style="emp-button" /></Link>
-                        <Link to="/login" className="w-full"><Button text="Login" /></Link>
-                    </div>
+                    {userContext.auth.accessToken ?
+                        <div className="buttons flex space-y-2 text-lg font-semibold flex-col px-2 lg:flex-row lg:items-center lg:justify-between lg:mt-0 lg:px-0 lg:space-y-0 lg:space-x-2">
+                        <button className="emp-button" onClick={HandleLogout}>Log Out</button>
+                        {userContext.auth.user.role === "admin" &&
+                                <Link to="/dashboard" className="w-full block">
+                                <button className="neu-button w-full">Dashboard</button>
+                            </Link>
+                            }
+                        </div>
+                        :
+                        <div className="buttons flex space-y-4 text-lg font-semibold flex-col px-2 lg:flex-row lg:items-center lg:justify-between lg:mt-0 lg:px-0 lg:space-y-0 lg:space-x-2">
+                            <Link to="/signup" className="w-full"><Button text="Sign Up" buttonStyle="emp-button" /></Link>
+                            <Link to="/login" className="w-full"><Button text="Login" buttonStyle="neu-button w-full" /></Link>
+                        </div>
+                    }
                 </nav>
             </div>
         </header>

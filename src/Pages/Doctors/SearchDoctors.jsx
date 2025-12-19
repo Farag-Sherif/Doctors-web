@@ -1,6 +1,7 @@
 import { useLocation, useOutletContext } from "react-router-dom";
 import doctor_1 from "../../assets/Home/doctors/doctor-1.webp";
 import ElementBox from "../../Components/Element/ElementBox";
+import PlaceholderCard from "../../Components/Element/PlaceholderCard";
 
 const SearchDoctors = () => {
     const [doctors] = useOutletContext();
@@ -47,6 +48,20 @@ const SearchDoctors = () => {
     return (
         <div className="search-doctors-page container mx-auto mb-20 p-5 pt-20">
             <div className="doctors grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-5">
+                {filteredDoctors.length === 0 ? (
+                    <>
+                        <PlaceholderCard />
+                        <PlaceholderCard />
+                        <PlaceholderCard />
+                        <PlaceholderCard />
+                        <PlaceholderCard />
+                        <PlaceholderCard />
+                        <PlaceholderCard />
+                        <PlaceholderCard />
+                        <PlaceholderCard />
+                        <PlaceholderCard />
+                    </>
+                ) : null}
                 {filteredDoctors.map((doctor) => (
                     <ElementBox
                         key={doctor.id}

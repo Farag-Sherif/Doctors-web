@@ -10,9 +10,9 @@ function App() {
   const location = useLocation();
   return (
     <>
-      {location.pathname === "/login" || location.pathname === "/signup" || location.pathname === "/ask" ? null : <Header />}
+      {location.pathname === "/login" || location.pathname === "/signup" || location.pathname === "/ask" || location.pathname.startsWith("/dashboard") ? null : <Header />}
       <AppRoutes />
-      {location.pathname === "/login" || location.pathname === "/signup" || location.pathname === "/ask" ? null : <Footer />}
+      {location.pathname === "/login" || location.pathname === "/signup" || location.pathname === "/ask" || location.pathname.startsWith("/dashboard") ? null : <Footer />}
       { location.pathname === "/ask" ? null : <AskAI />}
     </>
   )

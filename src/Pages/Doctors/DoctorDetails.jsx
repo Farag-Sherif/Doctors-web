@@ -2,6 +2,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import doctor_1 from "../../assets/Home/doctors/doctor-1.webp";
 import axios from "axios";
+import PlaceholderDetails from "../../Components/Element/PlaceholderDetails";
 
 const DoctorDetails = () => {
   const { id } = useParams();
@@ -41,12 +42,7 @@ const DoctorDetails = () => {
 
   if (!doctor) {
     return (
-      <div className="doctor-details-page min-h-screen pt-20 flex items-center justify-center">
-        <div className="text-center">
-          <i className="fa-solid fa-spinner fa-spin text-5xl text-blue-500 mb-4"></i>
-          <p className="text-xl text-gray-600">Loading doctor details...</p>
-        </div>
-      </div>
+      <PlaceholderDetails />
     );
   }
 
@@ -66,7 +62,7 @@ const DoctorDetails = () => {
         <div className="bg-white rounded-3xl shadow-lg p-8 mb-6">
           <div className="flex flex-col md:flex-row gap-8">
             {/* Doctor Image */}
-            <div className="flex-shrink-0">
+            <div className="">
               <img
                 src={doctor_1}
                 alt={doctor.name}

@@ -1,18 +1,17 @@
 import { Link, useNavigate } from "react-router-dom";
 import logo from "../../assets/logo.png";
 import login from "../../assets/Forms/medical-banner-with-stethoscope.jpg";
-import facebook from "../../assets/Forms/icons8-facebook-48.png";
-import google from "../../assets/Forms/icons8-google-48.png";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import axios from "axios";
 import Cookies from "universal-cookie";
-import Loading from "../../Components/Loading/Loading"
+import Loading from "../../Components/Loading/Loading";
+import { User } from "../../Components/Context/Context";
 
 const Login = () => {
-    const [loading , setLoding] = useState(false)
+    const user = useContext(User);
+    const [loading, setLoading] = useState(false);
     const nav = useNavigate();
     const cookie = new Cookies();
-    // object info for login
     const [info, setInfo] = useState({
         email: "",
         password: ""
@@ -23,105 +22,146 @@ const Login = () => {
         password: "",
         login: ""
     });
-    const [showPassword, setShowPassword] = useState({
-        password: false
-    });
+    const [showPassword, setShowPassword] = useState(false);
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    // handel submit
-    const handelSubmit = (e) => {
+
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log(info);
-        if (!info.email)
-            setError({ ...error, email: "Email is required" });
-        else if (!emailRegex.test(info.email))
-            setError({ ...error, email: "Email is not valid" });
-        else if (!info.password)
-            setError({ ...error, password: "Password is required" });
-        else if (info.password.length < 8)
-            setError({ ...error, password: "Password must be at least 8 characters" });
-        else {
-            setError({ email: "", password: "" });
-            sendData();
+        setError({ email: "", password: "", login: "" });
+
+        let hasError = false;
+        if (!info.email) {
+            setError((prev) => ({ ...prev, email: "Email is required" }));
+            hasError = true;
+        } else if (!emailRegex.test(info.email)) {
+            setError((prev) => ({ ...prev, email: "Email is not valid" }));
+            hasError = true;
         }
-        async function sendData() {
-                setLoding(true)
-            try {
-                const response = await axios.post("http://127.0.0.1:8000/api/auth/login/", {
-                    username: info.email.split('@')[0],
-                    email: info.email,
-                    password: info.password
-                }, {
-                    headers: {
-                        'Content-Type': 'application/json',
-                    }
-                });
-                console.log("Registration successful:", response.data);
-                cookie.set("token", response.data.access, { path: "/" });
-                nav("/");
-            } catch (err) {
-                console.error("Registration failed:", err.response?.data || err.message);
-                if (err.response?.status === 401) {
-                    setError({ ...error, login: "Email or password is not correct" });
-                }
-            } finally {
-                setLoding(false)
-            }
+        if (!info.password) {
+            setError((prev) => ({ ...prev, password: "Password is required" }));
+            hasError = true;
+        } else if (info.password.length < 8) {
+            setError((prev) => ({ ...prev, password: "Password must be at least 8 characters" }));
+            hasError = true;
         }
 
+        if (hasError) return;
+
+        setLoading(true);
+        try {
+            const response = await axios.post("http://127.0.0.1:8000/api/auth/login/", {
+                username:info.email.split("@")[0],
+                password: info.password
+            }, {
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            });
+            
+            console.log("Login successful:", response.data);
+            user.setAuth({ accessToken: response.data.access, refreshToken: response.data.refresh, user: { email: response.data.email, id: response.data.id, role: response.data.role } });
+            cookie.set("Bearer", response.data.access);
+            cookie.set("refresh", response.data.refresh);
+            cookie.set("user", JSON.stringify({ email: response.data.email, id: response.data.id, role: response.data.role }));
+            nav("/");
+        } catch (err) {
+            console.error("Login failed:", err.response?.data || err.message);
+            if (err.response?.status === 401) {
+                setError((prev) => ({ ...prev, login: "Email or password is not correct" }));
+            }
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    if (loading) {
+        return <Loading />;
     }
+
     return (
-    <>
-        { loading ? (<Loading /> ) : (
-            <div className="login-page relative z-0 overflow-x-hidden">
-                <div className="container min-h-screen py-10 lg:h-screen lg:max-h-screen flex justify-center items-center md:items-center md:justify-start px-5 mx-auto gap-5">
-                    <div className="form w-full md:w-1/2" >
-                        <img src={logo} alt="" className="w-20 h-20 mx-auto mb-6" />
-                        <h2 className="text-2xl font-bold mb-4 text-center">Log In</h2>
-                        <form>
-                            <div className="form-group flex flex-col gap-2">
-                                <div className="email">
-                                    <label htmlFor="email" className="block mb-2">Email:</label>
-                                    <input type="email" id="email" name="email" required className="w-full border-2 outline-none border-gray-300 text-lg px-5 py-2 rounded-2xl bg-blue-50 focus:border-blue-500 focus:shadow-blue" placeholder="Email"
-                                        value={info.email}
-                                        onChange={(e) => setInfo({ ...info, email: e.target.value })} />
-                                    {(!info.email || !emailRegex.test(info.email) )&& <p className="text-red-500 text-sm">{error.email}</p>}
-                                </div>
-                                <div className="password">
-                                    <label htmlFor="password" className="block mb-2">Password:</label>
-                                    <div className="relative">
-                                        <input type={showPassword.password ? "text" : "password"} id="password" name="password" required className=" w-full border-2 outline-none border-gray-300 text-lg px-5 py-2 rounded-2xl bg-blue-50 focus:border-blue-500 focus:shadow-blue" placeholder="Password"
-                                            value={info.password}
-                                            onChange={(e) => setInfo({ ...info, password: e.target.value })} />
-                                        <i className={`fa-regular ${showPassword.password ? "fa-eye-slash" : "fa-eye"} text-lg absolute top-1/2 right-6 transform -translate-y-1/2 cursor-pointer`} onClick={() => setShowPassword({ password: !showPassword.password })}></i>
-                                    </div>
-                                    {info.password.length < 8 && <p className="text-red-500 text-sm">{error.password}</p>}
-                                    {error.login && <p className="text-red-500 text-sm">{error.login}</p>}
-                                </div>
+        <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50 py-8 px-4 relative z-0">
+            <div className="w-full md:w-1/2">
+            <div className="max-w-md mx-auto">
+                {/* Header */}
+                <div className="text-center mb-8">
+                    <img src={logo} alt="Logo" className="w-20 h-20 mx-auto mb-6" />
+                    <h1 className="text-4xl font-bold text-gray-800 mb-2">Log In</h1>
+                    <p className="text-gray-600">Welcome back! Please sign in to your account.</p>
+                </div>
+
+                {/* Form Card */}
+                <div className="bg-white rounded-2xl shadow-xl p-8">
+                    <form onSubmit={handleSubmit} className="space-y-6">
+                        {/* Login Credentials Section */}
+                        <div>
+                            <h2 className="text-2xl font-semibold text-gray-800 mb-4 pb-2 border-b-2 border-blue-500">
+                                Login Credentials
+                            </h2>
+
+                            {/* Email */}
+                            <div className="mb-4">
+                                <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
+                                    Email Address <span className="text-red-500">*</span>
+                                </label>
+                                <input
+                                    type="email"
+                                    id="email"
+                                    name="email"
+                                    required
+                                    className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all"
+                                    placeholder="Email"
+                                    value={info.email}
+                                    onChange={(e) => setInfo({ ...info, email: e.target.value })}
+                                />
+                                {error.email && <p className="text-red-500 text-sm mt-1">{error.email}</p>}
                             </div>
-                            <div className="my-2 ml-3 text-end ">
-                                <p><Link to="/forgot-password" className="text-blue-500 hover:underline">Forget Password?</Link></p>
-                            </div>
-                        </form>
-                        <button type="submit" className="mt-4 bg-blue-500 text-white px-6 py-2 rounded-full hover:bg-blue-600 transition-colors duration-300 w-full" onClick={handelSubmit}>Log In</button>
-                        <div className="other-way-to-signup">
-                            <p className="text-center my-2 text-gray-500">Or Log In with</p>
-                            <div className="flex justify-center gap-6">
-                                <button className="cursor-pointer rounded-full p-1 bg-white border border-gray-300 hover:shadow-lg transition-shadow duration-300">
-                                    <img src={google} alt="Google" className="w-10 h-10" />
-                                </button>
-                                <button className="cursor-pointer rounded-full p-1 bg-white border border-gray-300 hover:shadow-lg transition-shadow duration-300">
-                                    <img src={facebook} alt="Facebook" className="w-10 h-10" />
-                                </button>
+
+                            {/* Password */}
+                            <div className="mb-4">
+                                <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
+                                    Password <span className="text-red-500">*</span>
+                                </label>
+                                <div className="relative">
+                                    <input
+                                        type={showPassword ? "text" : "password"}
+                                        id="password"
+                                        name="password"
+                                        required
+                                        className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all pr-12"
+                                        placeholder="Password"
+                                        value={info.password}
+                                        onChange={(e) => setInfo({ ...info, password: e.target.value })}
+                                    />
+                                    <button
+                                        type="button"
+                                        onClick={() => setShowPassword(!showPassword)}
+                                        className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
+                                    >
+                                        <i className={`fa-regular ${showPassword ? "fa-eye-slash" : "fa-eye"} text-lg`}></i>
+                                    </button>
+                                </div>
+                                {error.password && <p className="text-red-500 text-sm mt-1">{error.password}</p>}
+                                {error.login && <p className="text-red-500 text-sm mt-1">{error.login}</p>}
                             </div>
                         </div>
-                    </div>
-                    <img src={login} alt="" className="min-h-screen h-full hidden md:block absolute top-0 -right-10 w-1/2 object-cover -z-1" />
+
+                        {/* Submit Button */}
+                        <div className="pt-6">
+                            <button
+                                type="submit"
+                                className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-4 rounded-xl font-semibold text-lg hover:from-blue-700 hover:to-indigo-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105"
+                            >
+                                Log In
+                            </button>
+                        </div>
+                    </form>
+                </div>
                 </div>
             </div>
-        )
-}
-</>
-    )
-}
+            <img src={login} alt="" className="min-h-screen h-full hidden md:block absolute top-0 -right-10 w-1/2 object-cover -z-1" />
+
+        </div>
+    );
+};
 
 export default Login;

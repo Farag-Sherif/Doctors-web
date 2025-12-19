@@ -17,7 +17,7 @@ const Doctors = () => {
             try {
                 const response = await axios.get('https://doctorsapi.com/api/doctors', {
                     headers: {
-                        'api-key': 'hk_mijbtdyh2d98c87f71807efe31e9f6c0446f6b6bc36270dbd0599ee7c6df89c0299239fe' // استبدلها بمفتاحك الحقيقي
+                        'api-key': 'hk_mip354zdecc022a6f4303b8779ccb377a05e888272a9d52ac561bf419656c66994411d58' // استبدلها بمفتاحك الحقيقي
                     },
                     params: {
                         limit: 25,

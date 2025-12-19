@@ -1,8 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
 import logo from "../../assets/logo.png";
 import signup from "../../assets/Forms/medical-banner-with-stethoscope.jpg";
-import facebook from "../../assets/Forms/icons8-facebook-48.png";
-import google from "../../assets/Forms/icons8-google-48.png";
 import { useState } from "react";
 import axios from "axios";
 import Loading from "../../Components/Loading/Loading";
@@ -10,7 +8,6 @@ import Loading from "../../Components/Loading/Loading";
 const Signup = () => {
     const [loading, setLoading] = useState(false);
     const nav = useNavigate();
-    // object info for signup
     const [info, setInfo] = useState({
         firstName: "",
         lastName: "",
@@ -31,141 +28,249 @@ const Signup = () => {
     });
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
-    // handel submit
-    const handelSubmit = (e) => {
+
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log(info);
-        if (!info.firstName)
-            setError({ ...error, firstName: "First Name is required" });
-        else if (info.firstName.length < 3)
-            setError({ ...error, firstName: "First Name is not valid" });
-        else if (!info.lastName)
-            setError({ ...error, lastName: "Last Name is required" });
-        else if (info.lastName.length < 3)
-            setError({ ...error, lastName: "Last Name is not valid" });
-        else if (!info.email)
-            setError({ ...error, email: "Email is required" });
-        else if (!emailRegex.test(info.email))
-            setError({ ...error, email: "Email is not valid" });
-        else if (!info.password)
-            setError({ ...error, password: "Password is required" });
-        else if (info.password.length < 8)
-            setError({ ...error, password: "Password must be at least 8 characters" });
-        else if (!passwordRegex.test(info.password))
-            setError({ ...error, password: "Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character" });
-        else if (info.password !== info.confirmPassword)
-            setError({ ...error, confirmPassword: "Passwords do not match" });
-        else {
-            setError({ firstName: "", lastName: "", email: "", password: "", confirmPassword: "" });
-            sendData();
+        const newErrors = {
+            firstName: "",
+            lastName: "",
+            email: "",
+            password: "",
+            confirmPassword: ""
+        };
+        let hasError = false;
+
+        if (!info.firstName) {
+            newErrors.firstName = "First Name is required";
+            hasError = true;
+        } else if (info.firstName.length < 3) {
+            newErrors.firstName = "First Name must be at least 3 characters";
+            hasError = true;
         }
-        async function sendData() {
-            setLoading(true);
-            try {
-                const response = await axios.post("http://127.0.0.1:8000/api/auth/register/patient/", {
-                    first_name: info.firstName,
-                    last_name: info.lastName,
-                    email: info.email,
-                    password: info.password
-                }, {
-                    headers: {
-                        'Content-Type': 'application/json',
-                    }
-                });
-                console.log("Registration successful:", response.data);
-                nav("/login");
-            } catch (err) {
-                if (err.response?.status === 500) {
-                    setError({ ...error, email: "Email already exists" });
+
+        if (!info.lastName) {
+            newErrors.lastName = "Last Name is required";
+            hasError = true;
+        } else if (info.lastName.length < 3) {
+            newErrors.lastName = "Last Name must be at least 3 characters";
+            hasError = true;
+        }
+
+        if (!info.email) {
+            newErrors.email = "Email is required";
+            hasError = true;
+        } else if (!emailRegex.test(info.email)) {
+            newErrors.email = "Email is not valid";
+            hasError = true;
+        }
+
+        if (!info.password) {
+            newErrors.password = "Password is required";
+            hasError = true;
+        } else if (info.password.length < 8) {
+            newErrors.password = "Password must be at least 8 characters";
+            hasError = true;
+        } else if (!passwordRegex.test(info.password)) {
+            newErrors.password = "Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character";
+            hasError = true;
+        }
+
+        if (info.password !== info.confirmPassword) {
+            newErrors.confirmPassword = "Passwords do not match";
+            hasError = true;
+        }
+
+        setError(newErrors);
+
+        if (hasError) return;
+
+        setLoading(true);
+        try {
+            const response = await axios.post("http://127.0.0.1:8000/api/auth/register/patient/", {
+                first_name: info.firstName,
+                last_name: info.lastName,
+                email: info.email,
+                password: info.password
+            }, {
+                headers: {
+                    'Content-Type': 'application/json',
                 }
-            } finally {
-                setLoading(false);
+            });
+            console.log("Registration successful:", response.data);
+            nav("/login");
+        } catch (err) {
+            console.error("Registration failed:", err.response?.data || err.message);
+            if (err.response?.status === 500) {
+                setError(prev => ({ ...prev, email: "Email already exists" }));
             }
+        } finally {
+            setLoading(false);
         }
-        
+    };
+
+    if (loading) {
+        return <Loading />;
     }
+
     return (
-    <>
-        { loading?(<Loading />) : (
-            
-    <div className="signup-page  relative z-0 overflow-x-hidden">
-        <div className="container min-h-screen py-10 lg:h-screen lg:max-h-screen flex justify-center items-center md:items-start md:justify-start px-5 mx-auto gap-5">
-            <div className="form w-full md:w-1/2" >
-                <img src={logo} alt="" className="w-20 h-20 mx-auto mb-6" />
-                <h2 className="text-2xl font-bold mb-4 text-center">Sign Up</h2>
-                <form>
-                    <div className="form-group flex flex-col gap-2">
-                        <div className="fullName flex gap-4 flex-col md:flex-row">
-                            <div className="firstName w-full md:w-1/2 ">
-                                <label htmlFor="firstname" className="block mb-2">First Name:</label>
-                                <input type="text" id="firstname" name="firstname" required className=" w-full border-2 outline-none border-gray-300 text-lg px-5 py-2 rounded-2xl bg-blue-50 focus:border-blue-500 focus:shadow-blue" placeholder="First Name"
-                                    value={info.firstName}
-                                    onChange={(e) => setInfo({ ...info, firstName: e.target.value })} />
-                                {info.firstName.length < 3 && <p className="text-red-500 text-sm">{error.firstName}</p>}
-                            </div>
-                            <div className="lastName w-full md:w-1/2 ">
-                                <label htmlFor="lastname" className="block mb-2">Last Name:</label>
-                                <input type="text" id="lastname" name="lastname" required className="w-full border-2 outline-none border-gray-300 text-lg px-5 py-2 rounded-2xl bg-blue-50 focus:border-blue-500 focus:shadow-blue" placeholder="Last Name"
-                                    value={info.lastName}
-                                    onChange={(e) => setInfo({ ...info, lastName: e.target.value })} />
-                                {info.lastName.length < 3 && <p className="text-red-500 text-sm">{error.lastName}</p>}
-                            </div>
-                        </div>
-                        <div className="email">
-                            <label htmlFor="email" className="block mb-2">Email:</label>
-                            <input type="email" id="email" name="email" required className="w-full border-2 outline-none border-gray-300 text-lg px-5 py-2 rounded-2xl bg-blue-50 focus:border-blue-500 focus:shadow-blue" placeholder="Email"
-                                value={info.email}
-                                onChange={(e) => setInfo({ ...info, email: e.target.value })} />
-                            {(!emailRegex.test(info.email) || error.email) && <p className="text-red-500 text-sm">{error.email}</p>}
-                        </div>
-                        <div className="password">
-                            <label htmlFor="password" className="block mb-2">Password:</label>
-                            <div className="relative">
-                                <input type={showPassword.password ? "text" : "password"} id="password" name="password" required className=" w-full border-2 outline-none border-gray-300 text-lg px-5 py-2 rounded-2xl bg-blue-50 focus:border-blue-500 focus:shadow-blue" placeholder="Password"
-                                    value={info.password}
-                                    onChange={(e) => setInfo({ ...info, password: e.target.value })} />
-                                <i className={`fa-regular ${showPassword.password ? "fa-eye-slash" : "fa-eye"} text-lg absolute top-1/2 right-6 transform -translate-y-1/2 cursor-pointer`} onClick={() => setShowPassword({ password: !showPassword.password })}></i>
-                            </div>
-                            {(info.password.length < 8 || !passwordRegex.test(info.password)) && <p className="text-red-500 text-sm">{error.password}</p>}
-                        </div>
-                        <div className="confirmPassword">
-                            <label htmlFor="confirmPassword" className="block mb-2">Confirm Password:</label>
-                            <div className="relative">
-                                <input type={showPassword.confirmPassword ? "text" : "password"} id="confirmPassword" name="confirmPassword" required className="password w-full border-2 outline-none border-gray-300 text-lg px-5 py-2 rounded-2xl bg-blue-50 focus:border-blue-500 focus:shadow-blue" placeholder="Confirm Password"
-                                    value={info.confirmPassword}
-                                    onChange={(e) => setInfo({ ...info, confirmPassword: e.target.value })} />
-                                <i className={`fa-regular ${showPassword.confirmPassword ? "fa-eye-slash" : "fa-eye"} text-lg absolute top-1/2 right-6 transform -translate-y-1/2 cursor-pointer`} onClick={() => setShowPassword({ confirmPassword: !showPassword.confirmPassword })}></i>
-                            </div>
-                            {info.password !== info.confirmPassword && <p className="text-red-500 text-sm">{error.confirmPassword}</p>}
-                        </div>
-                    </div>
-                    <div className="my-2 ml-3 ">
-                        <p>Already have an account? <Link to="/login" className="text-blue-500 hover:underline">Login</Link></p>
-                    </div>
-                </form>
-                <button type="submit" className="mt-4 bg-blue-500 text-white px-6 py-2 rounded-full hover:bg-blue-600 transition-colors duration-300 w-full" onClick={handelSubmit}>Sign Up</button>
-                <div className="my-4 ml-3 text-gray-600">
-                    <p>By signing up, you agree to our <Link to="/terms" className="text-blue-500 hover:underline">Terms of Service</Link> and <Link to="/privacy" className="text-blue-500 hover:underline">Privacy Policy</Link>.</p>
+        <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50 py-8 px-4 relative z-0">
+            <div className="w-full md:w-1/2 ">
+            <div className="max-w-lg mx-auto">
+                {/* Header */}
+                <div className="text-center mb-8">
+                    <img src={logo} alt="Logo" className="w-20 h-20 mx-auto mb-6" />
+                    <h1 className="text-4xl font-bold text-gray-800 mb-2">Sign Up</h1>
+                    <p className="text-gray-600">Create your account to get started.</p>
                 </div>
-                <div className="other-way-to-signup">
-                    <p className="text-center my-2 text-gray-500">Or sign up with</p>
-                    <div className="flex justify-center gap-6">
-                        <button className="cursor-pointer p-1 bg-white border border-gray-300  rounded-full hover:shadow-lg transition-shadow duration-300">
-                            <img src={google} alt="Google" className="w-10 h-10" />
-                        </button>
-                        <button className="cursor-pointer p-1 bg-white border border-gray-300  rounded-full hover:shadow-lg transition-shadow duration-300">
-                            <img src={facebook} alt="Facebook" className="w-10 h-10" />
-                        </button>
+
+                {/* Form Card */}
+                <div className="bg-white rounded-2xl shadow-xl p-8">
+                    <form onSubmit={handleSubmit} className="space-y-6">
+                        {/* Personal Information Section */}
+                        <div>
+                            <h2 className="text-2xl font-semibold text-gray-800 mb-4 pb-2 border-b-2 border-blue-500">
+                                Personal Information
+                            </h2>
+
+                            {/* First Name & Last Name */}
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                                <div>
+                                    <label htmlFor="firstname" className="block text-sm font-medium text-gray-700 mb-2">
+                                        First Name <span className="text-red-500">*</span>
+                                    </label>
+                                    <input
+                                        type="text"
+                                        id="firstname"
+                                        name="firstname"
+                                        required
+                                        className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all"
+                                        placeholder="First Name"
+                                        value={info.firstName}
+                                        onChange={(e) => setInfo({ ...info, firstName: e.target.value })}
+                                    />
+                                    {error.firstName && <p className="text-red-500 text-sm mt-1">{error.firstName}</p>}
+                                </div>
+                                <div>
+                                    <label htmlFor="lastname" className="block text-sm font-medium text-gray-700 mb-2">
+                                        Last Name <span className="text-red-500">*</span>
+                                    </label>
+                                    <input
+                                        type="text"
+                                        id="lastname"
+                                        name="lastname"
+                                        required
+                                        className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all"
+                                        placeholder="Last Name"
+                                        value={info.lastName}
+                                        onChange={(e) => setInfo({ ...info, lastName: e.target.value })}
+                                    />
+                                    {error.lastName && <p className="text-red-500 text-sm mt-1">{error.lastName}</p>}
+                                </div>
+                            </div>
+
+                            {/* Email */}
+                            <div className="mb-4">
+                                <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
+                                    Email Address <span className="text-red-500">*</span>
+                                </label>
+                                <input
+                                    type="email"
+                                    id="email"
+                                    name="email"
+                                    required
+                                    className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all"
+                                    placeholder="Email"
+                                    value={info.email}
+                                    onChange={(e) => setInfo({ ...info, email: e.target.value })}
+                                />
+                                {error.email && <p className="text-red-500 text-sm mt-1">{error.email}</p>}
+                            </div>
+
+                            {/* Passwords */}
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
+                                        Password <span className="text-red-500">*</span>
+                                    </label>
+                                    <div className="relative">
+                                        <input
+                                            type={showPassword.password ? "text" : "password"}
+                                            id="password"
+                                            name="password"
+                                            required
+                                            className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all pr-12"
+                                            placeholder="Password"
+                                            value={info.password}
+                                            onChange={(e) => setInfo({ ...info, password: e.target.value })}
+                                        />
+                                        <button
+                                            type="button"
+                                            onClick={() => setShowPassword({ ...showPassword, password: !showPassword.password })}
+                                            className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
+                                        >
+                                            <i className={`fa-regular ${showPassword.password ? "fa-eye-slash" : "fa-eye"} text-lg`}></i>
+                                        </button>
+                                    </div>
+                                    {error.password && <p className="text-red-500 text-sm mt-1">{error.password}</p>}
+                                </div>
+                                <div>
+                                    <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700 mb-2">
+                                        Confirm Password <span className="text-red-500">*</span>
+                                    </label>
+                                    <div className="relative">
+                                        <input
+                                            type={showPassword.confirmPassword ? "text" : "password"}
+                                            id="confirmPassword"
+                                            name="confirmPassword"
+                                            required
+                                            className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all pr-12"
+                                            placeholder="Confirm Password"
+                                            value={info.confirmPassword}
+                                            onChange={(e) => setInfo({ ...info, confirmPassword: e.target.value })}
+                                        />
+                                        <button
+                                            type="button"
+                                            onClick={() => setShowPassword({ ...showPassword, confirmPassword: !showPassword.confirmPassword })}
+                                            className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
+                                        >
+                                            <i className={`fa-regular ${showPassword.confirmPassword ? "fa-eye-slash" : "fa-eye"} text-lg`}></i>
+                                        </button>
+                                    </div>
+                                    {error.confirmPassword && <p className="text-red-500 text-sm mt-1">{error.confirmPassword}</p>}
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Submit Button */}
+                        <div className="pt-6">
+                            <button
+                                type="submit"
+                                className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-4 rounded-xl font-semibold text-lg hover:from-blue-700 hover:to-indigo-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105"
+                            >
+                                Sign Up
+                            </button>
+                        </div>
+                    </form>
+
+                    {/* Links */}
+                    <div className="text-center mt-6">
+                        <p className="text-gray-600">
+                            Already have an account? <Link to="/login" className="text-blue-500 hover:underline font-medium">Login</Link>
+                        </p>
                     </div>
+                    <div className="text-center mt-4 text-xs text-gray-500">
+                        <p>
+                            By signing up, you agree to our <Link to="/terms" className="text-blue-500 hover:underline">Terms of Service</Link> and{" "}
+                            <Link to="/privacy" className="text-blue-500 hover:underline">Privacy Policy</Link>.
+                        </p>
+                    </div>
+                </div>
                 </div>
             </div>
             <img src={signup} alt="" className="min-h-screen h-full hidden md:block absolute top-0 -right-10 w-1/2 object-cover -z-1" />
+
         </div>
-        </div>
-        )
-            }
-        </>
-    )
-}
+    );
+};
 
 export default Signup;

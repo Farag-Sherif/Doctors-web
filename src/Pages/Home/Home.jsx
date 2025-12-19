@@ -22,8 +22,8 @@ const Home = () => {
                             Discover the journey to vibrant health and an inspired
                             life with wellcare health.</p>
                         <div className="buttons flex gap-5 w-full md:flex-nowrap flex-wrap">
-                            <button className="neu-button min-w-[200px] w-3/4" style={{ border: "none" }}>Book Appointment</button>
-                            <button className="emp-button bg-white  min-w-[200px] w-3/4" style={{ border: "none" }}>Contact Us <i className="fa-solid fa-arrow-right"></i></button>
+                            <button className="neu-button min-w-[200px] w-full" style={{ border: "none" }}>Book Appointment</button>
+                            <button className="emp-button bg-white  min-w-[200px] w-full" style={{ border: "none" }}>Contact Us <i className="fa-solid fa-arrow-right"></i></button>
                         </div>
                         <div className="patients-records mt-5">
                             <div className="images">

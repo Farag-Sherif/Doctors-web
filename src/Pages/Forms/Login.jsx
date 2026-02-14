@@ -59,10 +59,10 @@ const Login = () => {
             });
             
             console.log("Login successful:", response.data);
-            user.setAuth({ accessToken: response.data.access, refreshToken: response.data.refresh, user: { email: response.data.email, id: response.data.id, role: response.data.role } });
+            user.setAuth({ accessToken: response.data.access, refreshToken: response.data.refresh, user: { email: response.data.email, id: response.data.id, role: response.data.role, username: response.data.profile.username, profile_picture: response.data.profile.profile_picture } });
             cookie.set("Bearer", response.data.access);
             cookie.set("refresh", response.data.refresh);
-            cookie.set("user", JSON.stringify({ email: response.data.email, id: response.data.id, role: response.data.role }));
+            cookie.set("user", JSON.stringify({ email: response.data.email, id: response.data.id, role: response.data.role , username: response.data.profile.username , profile_picture: response.data.profile.profile_picture}));
             nav("/");
         } catch (err) {
             console.error("Login failed:", err.response?.data || err.message);

@@ -114,7 +114,7 @@ const Filter = ({setCurrentPage}) => {
                 <p className="text-gray-400 text-sm mb-5 text-center capitalize">Select {filter}</p>
                 <Swiper
                     slidesPerView={1}
-                    spaceBetween={55}
+                    spaceBetween={100}
                     initialSlide={0}
                     modules={[Navigation]}
                     navigation={true}

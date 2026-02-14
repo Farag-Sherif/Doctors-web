@@ -16,7 +16,7 @@ header {
 
         span.active,
         a.active {
-            color: #777 !important;
+            color: #8ec5ff !important;
         }
         .have-submenu:hover {
     i{
@@ -65,6 +65,7 @@ header {
         -moz-transform: translateY(0) !important;
         -ms-transform: translateY(0) !important;
         -o-transform: translateY(0) !important;
+        
 
         .nav {
             max-width: calc(100% + 31px);

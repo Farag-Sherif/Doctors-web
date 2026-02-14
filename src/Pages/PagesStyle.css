@@ -41,22 +41,15 @@
 /* //////////////////////////////////////////End of Home Page Styles//////////////////////////////////////////////// */
 /* //////////////////////////////////////////start of Doctors Page Styles//////////////////////////////////////////////// */
 .doctors-page {
+    .landing {
+        &::after{
+            z-index: -2 !important;
+        }
     .title {
         position: relative;
         z-index: 0;
-
-        &::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image: linear-gradient(180deg, white 30%, transparent 100%);
-            z-index: -1;
-
-        }
     }
+}
 
     .swiper {
         width: 100%;
@@ -114,9 +107,8 @@
 
 /* //////////////////////////////////////////End of Doctors Page Styles//////////////////////////////////////////////// */
 /* //////////////////////////////////////////start of contact Us Page Styles//////////////////////////////////////////////// */
-.contact-page {
+.page {
     .landing{
-        position:relative;
         z-index: 0;
         &::after{
             content: "";

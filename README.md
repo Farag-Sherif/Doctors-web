@@ -1,8 +1,4 @@
-تمام! 😊 هنا **نسخة README جاهزة ومُنسّقة** ومخصّصة لمشروعك 👇
 
----
-
-```md
 # 🩺 Doctors Website
 
 A responsive and modern Doctors Appointment Website built with **React + Vite + Tailwind CSS**, designed to make it easy for users to browse doctors, view details, and book appointments online.

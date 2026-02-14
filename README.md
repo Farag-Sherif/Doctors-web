@@ -31,12 +31,17 @@ This project was developed as part of participation in the **Huawei Competition*
 
 ## 🎯 Features
 
-🧑‍⚕️ Browse doctors by specialization  
-📅 Book appointments easily  
-🔍 Search and filter doctors  
-💬 Contact form for user inquiries  
-🌗 Clean and modern UI  
-⚡ Fast loading performance
+📅 Book appointments with doctors easily
+
+📞 View doctors’ phone numbers and contact details
+
+🔍 Search for pharmacies, laboratories, and radiology centers
+
+🏥 View full details for each medical facility
+
+🧑‍⚕️ Browse doctors by specialization
+
+📱 Fully responsive design for all devices
 
 ---
 
